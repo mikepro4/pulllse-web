@@ -19,11 +19,13 @@ function ensureSecure(req, res, next) {
     }
 }
 
+
+const app = next({ dev, hostname, port })
+
  // Apply the middleware only in production
  if (process.env.NODE_ENV === 'production') {
     app.use(ensureSecure);
 }
-const app = next({ dev, hostname, port })
 const handle = app.getRequestHandler()
  
 app.prepare().then(() => {
