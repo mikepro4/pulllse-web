@@ -30,10 +30,7 @@ function ensureSecure(req, res, next) {
     }
 }
 
-// Apply the middleware only in production
-if (process.env.NODE_ENV === 'production') {
-    app.use(ensureSecure);
-}
+
 
 
 app.use(
@@ -55,6 +52,11 @@ app.use(
 app.use(express.json()); // this is the body parser
 
 nextApp.prepare().then(() => {
+
+    // Apply the middleware only in production
+    if (process.env.NODE_ENV === 'production') {
+        app.use(ensureSecure);
+    }
 
     app.all('*', (req, res) => handle(req, res));
 
