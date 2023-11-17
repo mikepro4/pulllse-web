@@ -20,6 +20,7 @@ dns.setDefaultResultOrder('ipv4first');
 // enable ssl redirect
 // HTTPS Redirect Middleware
 function ensureSecure(req, res, next) {
+    console.log('x-forwarded-proto:', req.headers["x-forwarded-proto"]); // Debug log
     if (req.headers["x-forwarded-proto"] === "https" || req.headers["x-forwarded-proto"] === undefined) {
         // Request was via https, so do no special handling
         next();
