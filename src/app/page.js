@@ -13,7 +13,9 @@ export default function Home() {
     justifyContent: 'center',
     display: 'flex',
    }}>
-    pulllse
+    
+    pulllse 2
+
    </div>
   )
 }
