@@ -3,26 +3,9 @@ const { parse } = require('url')
 const next = require('next')
  
 const dev = process.env.NODE_ENV !== 'production'
-const port = process.env.PORT || 9999;
-const hostname = process.env.HOST || `localhost`;
-
+const hostname = 'localhost'
+const port = 3000
 // when using middleware `hostname` and `port` must be provided below
-
-function ensureSecure(req, res, next) {
-    console.log('x-forwarded-proto:', req.headers["x-forwarded-proto"]); // Debug log
-    if (req.headers["x-forwarded-proto"] === "https" || req.headers["x-forwarded-proto"] === undefined) {
-        // Request was via https, so do no special handling
-        next({ dev, hostname, port })
-    } else {
-        // Redirect to https
-        res.redirect('https://' + req.hostname + req.url);
-    }
-}
-
- // Apply the middleware only in production
- if (process.env.NODE_ENV === 'production') {
-    app.use(ensureSecure);
-}
 const app = next({ dev, hostname, port })
 const handle = app.getRequestHandler()
  
