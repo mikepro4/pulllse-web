@@ -18,7 +18,22 @@ const dns  = require("node:dns");
 dns.setDefaultResultOrder('ipv4first');
 
 // enable ssl redirect
-app.use(sslRedirect(['production'], 301));
+// HTTPS Redirect Middleware
+function ensureSecure(req, res, next) {
+    if (req.headers["x-forwarded-proto"] === "https" || req.headers["x-forwarded-proto"] === undefined) {
+        // Request was via https, so do no special handling
+        next();
+    } else {
+        // Redirect to https
+        res.redirect('https://' + req.hostname + req.url);
+    }
+}
+
+// Apply the middleware only in production
+if (process.env.NODE_ENV === 'production') {
+    app.use(ensureSecure);
+}
+
 
 app.use(
     PROXY_ROUTE,
