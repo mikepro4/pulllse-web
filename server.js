@@ -35,7 +35,7 @@ app.prepare().then(() => {
                 }
             } else {
                 // Redirect to https
-                handle(req, res, `https://${req.headers.host}${req.url}`)
+                handle(req, res, { pathname: `https://${req.headers.host}${req.url}` })
             } 
 
            
