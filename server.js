@@ -38,13 +38,20 @@ app.prepare().then(() => {
             const parsedUrl = parse(req.url, true)
             const { pathname, query } = parsedUrl
 
-            if (pathname === '/a') {
-                await app.render(req, res, '/a', query)
-            } else if (pathname === '/b') {
-                await app.render(req, res, '/b', query)
+            if (req.headers["x-forwarded-proto"] === "https" || req.headers["x-forwarded-proto"] === undefined) {
+                if (pathname === '/a') {
+                    await app.render(req, res, '/a', query)
+                } else if (pathname === '/b') {
+                    await app.render(req, res, '/b', query)
+                } else {
+                    await handle(req, res, parsedUrl)
+                }
             } else {
-                await handle(req, res, parsedUrl)
-            }
+                // Redirect to https
+                res.redirect(`https://${req.headers.host}${req.url}`);
+            } 
+
+           
 
 
         } catch (err) {
